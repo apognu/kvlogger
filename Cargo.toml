@@ -1,7 +1,11 @@
 [package]
 name = "kvlogger"
 version = "0.1.0"
+description = "A simple human readable key-value logger"
 authors = ["Antoine POPINEAU <antoine.popineau@appscho.com>"]
+repository = "https://github.com/apognu/kvlogger"
+license = "MIT"
+
 edition = "2018"
 
 [dependencies]
