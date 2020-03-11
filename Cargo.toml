@@ -1,0 +1,11 @@
+[package]
+name = "kvlogger"
+version = "0.1.0"
+authors = ["Antoine POPINEAU <antoine.popineau@appscho.com>"]
+edition = "2018"
+
+[dependencies]
+env_logger = "0.7.1"
+log = { version = "0.4.8", features = ["std"] }
+colored = "1.9.3"
+chrono = "0.4.11"
