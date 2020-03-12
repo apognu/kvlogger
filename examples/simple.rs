@@ -3,10 +3,14 @@ extern crate log;
 
 use kvlogger::*;
 use log::Level;
+use log::*;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
   kvlogger::init()?;
+
+  info!("simple message");
+  warn!("this is a warning");
 
   kvlog!(Info, "GET /favicon.ico", {
     "method" => "GET",

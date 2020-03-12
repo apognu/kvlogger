@@ -2,6 +2,7 @@ mod macros;
 
 pub use self::macros::*;
 
+use colored::*;
 use env_logger::Builder;
 use log::{Level, Log, Metadata, Record};
 use std::error::Error;
@@ -20,7 +21,9 @@ impl Log for KvLogger {
             return;
         }
 
-        println!("{}", record.args());
+        let (prefix, color) = get_decoration(record.metadata().level());
+        let date = chrono::Utc::now().format("%Y-%m-%dT%H:%M:%S%z");
+        println!("{}[{}] {}", prefix.color(color).bold(), date, record.args());
     }
 
     fn flush(&self) {}
@@ -40,4 +43,14 @@ pub fn init_at(level: Level) -> Result<(), Box<dyn Error>> {
     log::set_max_level(level.to_level_filter());
 
     Ok(())
+}
+
+pub fn get_decoration(level: Level) -> (&'static str, &'static str) {
+    match level {
+        Level::Trace => ("TRAC", ""),
+        Level::Debug => ("DEBG", ""),
+        Level::Info => ("INFO", "blue"),
+        Level::Warn => ("WARN", "yellow"),
+        Level::Error => ("FATA", "red"),
+    }
 }

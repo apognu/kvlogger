@@ -1,12 +1,7 @@
 #[macro_export]
 macro_rules! kvlog {
   ( DONE, $level:expr, $message:expr, $kvs:expr ) => {
-    let (prefix, color) = match $level {
-      log::Level::Info => ("INFO", "blue"),
-      log::Level::Warn => ("WARN", "yellow"),
-      log::Level::Error => ("FATA", "red"),
-      _ => ("", "")
-    };
+    let (prefix, color) = kvlogger::get_decoration($level);
 
     let line = $kvs
       .iter()
@@ -16,8 +11,7 @@ macro_rules! kvlog {
       .collect::<Vec<String>>()
       .join(" ");
 
-    let date = chrono::Utc::now().format("%Y-%m-%dT%H:%M:%S%z");
-    let line = format!("{}[{}] {} {}", prefix.color(color).bold(), date, $message, line);
+    let line = format!("{} {}", $message, line);
     match $level {
       Level::Error => log::error!("{}", line),
       Level::Warn => log::warn!("{}", line),
