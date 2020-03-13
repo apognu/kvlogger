@@ -9,11 +9,11 @@ macro_rules! kvlog {
 
     let line = format!("{} {}", $message, line);
     match $level {
-      Level::Error => log::error!("{}", line),
-      Level::Warn => log::warn!("{}", line),
-      Level::Info => log::info!("{}", line),
-      Level::Debug => log::debug!("{}", line),
-      Level::Trace => log::trace!("{}", line),
+      log::Level::Error => log::error!("{}", line),
+      log::Level::Warn => log::warn!("{}", line),
+      log::Level::Info => log::info!("{}", line),
+      log::Level::Debug => log::debug!("{}", line),
+      log::Level::Trace => log::trace!("{}", line),
     }
   };
 
