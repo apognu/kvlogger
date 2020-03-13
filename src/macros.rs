@@ -26,8 +26,8 @@ macro_rules! kvlog {
     let mut kvs: std::collections::HashSet<(String, String)> = std::collections::HashSet::new();
 
     $(
-      let k: String = $key.into();
-      let v: String = $value.into();
+      let k: String = format!("{}", $key);
+      let v: String = format!("{}", $value);
 
       kvs.insert((k, v));
     )*
