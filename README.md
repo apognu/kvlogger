@@ -26,3 +26,19 @@ fn main() -> Result<(), Box<dyn Error>> {
   Ok(())
 }
 ```
+
+## Configuration
+
+`kvlogger` uses [env_logger](https://github.com/sebasmagri/env_logger) under the hood for filter selection. You have two ways to configure the desired level for your logs:
+
+ * You can register the logger at a specific level with `init_at`:
+
+```rust
+kvlogger::init_at(Level::Debug)?;
+```
+
+ * You can use the `RUST_LOG` environment variable to specify which logs should be considered. See the [env_logger documentation](https://docs.rs/env_logger/0.7.1/env_logger/) for more information.
+
+```shell
+$ RUST_LOG=rocket=error,main=info cargo run
+```

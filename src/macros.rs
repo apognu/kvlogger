@@ -1,13 +1,9 @@
 #[macro_export]
 macro_rules! kvlog {
   ( DONE, $level:expr, $message:expr, $kvs:expr ) => {
-    let (prefix, color) = kvlogger::get_decoration($level);
-
     let line = $kvs
       .iter()
-      .map(|(k, v)| {
-        format!(r#"{}="{}""#, k.color(color).bold(), v)
-      })
+      .map(|(k, v)| kvlogger::get_line($level, k, v))
       .collect::<Vec<String>>()
       .join(" ");
 
@@ -22,7 +18,6 @@ macro_rules! kvlog {
   };
 
   ( $level:ident, $message:expr, { $($key:expr => $value:expr),* } ) => {
-    use colored::*;
     let mut kvs: std::collections::HashSet<(String, String)> = std::collections::HashSet::new();
 
     $(
