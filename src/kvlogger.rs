@@ -1,13 +1,10 @@
 use colored::*;
-use env_logger::{
-    filter::{Builder as FilterBuilder, Filter},
-    Builder,
-};
+use env_logger::filter::Filter;
 use log::{Level, Log, Metadata, Record};
-use std::error::Error;
 
-struct KvLogger {
-    filter: Filter,
+pub(crate) struct KvLogger {
+    pub(crate) filter: Filter,
+    pub(crate) datetime_format: String,
 }
 
 impl Log for KvLogger {
@@ -21,44 +18,15 @@ impl Log for KvLogger {
         }
 
         let (prefix, color) = get_decoration(record.metadata().level());
-        let date = chrono::Utc::now().format("%Y-%m-%dT%H:%M:%S%z");
-        println!("{}[{}] {}", prefix.color(color).bold(), date, record.args());
+        println!(
+            "{}[{}] {}",
+            prefix.color(color).bold(),
+            get_datetime(&self.datetime_format),
+            record.args()
+        );
     }
 
     fn flush(&self) {}
-}
-
-pub fn init() -> Result<(), Box<dyn Error>> {
-    let builder = Builder::from_default_env().build();
-    let level = builder.filter().to_level().unwrap_or(Level::Error);
-
-    let logger = KvLogger {
-        filter: FilterBuilder::from_env("RUST_LOG").build(),
-    };
-
-    log::set_boxed_logger(Box::new(logger))?;
-    log::set_max_level(level.to_level_filter());
-
-    Ok(())
-}
-
-pub fn init_at(level: Level) -> Result<(), Box<dyn Error>> {
-    let spec = match level {
-        Level::Trace => "trace",
-        Level::Debug => "debug",
-        Level::Info => "info",
-        Level::Warn => "warn",
-        Level::Error => "error",
-    };
-
-    let logger = KvLogger {
-        filter: FilterBuilder::new().parse(spec).build(),
-    };
-
-    log::set_boxed_logger(Box::new(logger))?;
-    log::set_max_level(level.to_level_filter());
-
-    Ok(())
 }
 
 pub fn get_decoration(level: Level) -> (&'static str, &'static str) {
@@ -77,4 +45,21 @@ pub fn get_line(level: Level, key: &str, value: &str) -> String {
     let (_, color) = get_decoration(level);
 
     format!(r#"{}="{}""#, key.color(color).bold(), value)
+}
+
+#[cfg(feature = "datetime")]
+fn get_datetime(format: &str) -> String {
+    format!("{}", chrono::Utc::now().format(format))
+}
+
+#[cfg(not(feature = "datetime"))]
+fn get_datetime(_: &str) -> String {
+    use std::time::{SystemTime, UNIX_EPOCH};
+    format!(
+        "{}",
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|t| t.as_secs())
+            .unwrap_or(0)
+    )
 }

@@ -1,4 +1,4 @@
-use kvlogger::*;
+use kvlogger::{KvLoggerBuilder, *};
 use log::*;
 use std::error::Error;
 
@@ -13,7 +13,7 @@ impl std::fmt::Display for Person {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-  kvlogger::init()?;
+  KvLoggerBuilder::default().init()?;
 
   info!("simple message");
   warn!("this is a warning");
