@@ -58,7 +58,7 @@ KvLoggerBuilder::default()
 
 ### Optional features
 
-By default, the date used is printed as the number of seconds since UNIX epoch. You can opt in the use of more complex (and human readable) formats by enabling the `datetime` feature in `Cargo.toml`:
+By default, the date used is printed as the number of milliseconds since UNIX epoch. You can opt in the use of more complex (and human readable) formats by enabling the `datetime` feature in `Cargo.toml`:
 
 ```toml
 [dependencies]

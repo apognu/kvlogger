@@ -18,6 +18,8 @@ fn main() -> Result<(), Box<dyn Error>> {
   info!("simple message");
   warn!("this is a warning");
 
+  kvlog!(Info, "coucou");
+
   kvlog!(Info, "GET /favicon.ico", {
     "method" => "GET",
     "scheme" => "https",

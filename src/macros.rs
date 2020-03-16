@@ -1,3 +1,16 @@
+/// Log a message with a key/value list
+///
+/// Keys and values must implement the `Display` trait in order to be used. It
+/// is recommended those keys and values output to a single line.
+///
+/// # Examples
+///
+/// ```
+/// kvlog!(Info, "a user just logged in", {
+///   "username" => "apognu",
+///   "status" => 200
+/// })
+/// ```
 #[macro_export]
 macro_rules! kvlog {
   ( DONE, $level:expr, $message:expr, $kvs:expr ) => {
@@ -28,5 +41,9 @@ macro_rules! kvlog {
     )*
 
     kvlog!(DONE, log::Level::$level, $message, kvs);
+  };
+
+  ( $level:ident, $message:expr ) => {
+    kvlog!($level, $message, {});
   };
 }
