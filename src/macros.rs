@@ -33,7 +33,7 @@ macro_rules! kvlog {
   };
 
   ( $level:ident, $message:expr, { $($key:expr => $value:expr),* } ) => {
-    let mut kvs: indexmap::IndexSet<(String, String)> = indexmap::IndexSet::new();
+    let mut kvs: $crate::indexmap::IndexSet<(String, String)> = $crate::indexmap::IndexSet::new();
 
     $(
       let k: String = format!("{}", $key);

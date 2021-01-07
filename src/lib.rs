@@ -25,6 +25,8 @@
 //! }
 //! ```
 
+pub extern crate indexmap;
+
 mod builder;
 mod kvlogger;
 mod macros;
