@@ -18,7 +18,7 @@ macro_rules! kvlog {
   ( DONE, $level:expr, $message:expr, $kvs:expr ) => {
     let line = $kvs
       .iter()
-      .map(|(k, v)| crate::get_line($level, k, v))
+      .map(|(k, v)| $crate::get_line($level, k, v))
       .collect::<Vec<String>>()
       .join(" ");
 
