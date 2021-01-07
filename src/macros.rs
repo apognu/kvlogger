@@ -6,17 +6,19 @@
 /// # Examples
 ///
 /// ```
+/// use kvlogger::*;
+///
 /// kvlog!(Info, "a user just logged in", {
 ///   "username" => "apognu",
 ///   "status" => 200
-/// })
+/// });
 /// ```
 #[macro_export]
 macro_rules! kvlog {
   ( DONE, $level:expr, $message:expr, $kvs:expr ) => {
     let line = $kvs
       .iter()
-      .map(|(k, v)| kvlogger::get_line($level, k, v))
+      .map(|(k, v)| crate::get_line($level, k, v))
       .collect::<Vec<String>>()
       .join(" ");
 
@@ -31,7 +33,7 @@ macro_rules! kvlog {
   };
 
   ( $level:ident, $message:expr, { $($key:expr => $value:expr),* } ) => {
-    let mut kvs: std::collections::HashSet<(String, String)> = std::collections::HashSet::new();
+    let mut kvs: indexmap::IndexSet<(String, String)> = indexmap::IndexSet::new();
 
     $(
       let k: String = format!("{}", $key);

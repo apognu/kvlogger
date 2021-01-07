@@ -32,9 +32,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     "error" => "timeout"
   });
 
-  let user = Person {
-    username: "apognu".to_string(),
-  };
+  let user = Person { username: "apognu".to_string() };
 
   kvlog!(Trace, "my message", {
     "boolean" => true,

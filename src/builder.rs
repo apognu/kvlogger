@@ -1,19 +1,26 @@
 use crate::kvlogger::KvLogger;
 use env_logger::filter::{Builder as FilterBuilder, Filter};
-use log::Level;
-use std::error::Error;
+use log::{Level, SetLoggerError};
 
 /// A builder to create and register `kvlogger`
 ///
 /// # Examples
 ///
-/// ```
-/// KvLogger::default().init?;
+/// ```no_run
+/// use std::error::Error;
+/// use log::Level;
+/// use kvlogger::*;
 ///
-/// KvLogger::default()
-///   .set_level(Level::Debug)
-///   .set_datetime_format("%Y-%m-%d")
-///   .init()?;
+/// fn main() -> Result<(), Box<dyn Error>> {
+///   KvLoggerBuilder::default().init()?;
+///
+///   KvLoggerBuilder::default()
+///     .set_level(Level::Debug)
+///     .set_datetime_format("%Y-%m-%d")
+///     .init()?;
+///
+///   Ok(())
+/// }
 /// ```
 pub struct KvLoggerBuilder {
   filter: Filter,
@@ -66,7 +73,7 @@ impl KvLoggerBuilder {
   ///
   /// This method closes the builder by moving it and registers `kvlogger` as
   /// the default log system for the current program.
-  pub fn init(self) -> Result<(), Box<dyn Error>> {
+  pub fn init(self) -> Result<(), SetLoggerError> {
     let filter = self.filter.filter();
     let logger = KvLogger {
       filter: self.filter,
