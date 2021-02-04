@@ -41,5 +41,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     "struct" => user
   });
 
+  kvlog!(Info, "empty attributes are hidden", {
+    "visible" => "Something",
+    "hidden" => ""
+  });
+
   Ok(())
 }

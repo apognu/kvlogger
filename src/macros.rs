@@ -39,7 +39,9 @@ macro_rules! kvlog {
       let k: String = format!("{}", $key);
       let v: String = format!("{}", $value);
 
-      kvs.insert((k, v));
+      if v.len() > 0 {
+        kvs.insert((k, v));
+      }
     )*
 
     kvlog!(DONE, log::Level::$level, $message, kvs);
